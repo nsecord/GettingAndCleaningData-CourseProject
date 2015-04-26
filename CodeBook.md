@@ -1,26 +1,32 @@
 ## Introduction
-This codebook describes a tidy dataset that is extracted from the original UCI HAR Dataset of measurements 
+This codebook describes the creation of a tidy dataset that is extracted from the original UCI HAR Dataset of measurements of human activity taken with the accelerometer and gyroscope of a Samsung Galaxy S II.
+
+We say that the final dataset is "tidy" as there is a single row of observations per subject and per activity. The features represent typical measures (mean and standard deviations of time and frequency signals) of the X, Y and Z components coming from the accelerometer and gyroscope. Magnitude measurements, derived by taking the Euclidean norm of the X, Y a,d Z components, are also included.
+
 
 ## Description
 The original UCI HAR Dataset consists of training and test datasets that when combined represent 10299 observations on 561 features. Each observation represents a given time or frequency signal derived from 3-axial accelerometer and gyroscope raw signal readings.  The observations are labelled by subject and activity so that adding these columns yields a total dataset of 10299 rows by 563 columns.
 
-From the original 561 measurement variables, a subset of features are obtained by keeping only those measurements representing the mean and standard deviation of the corresponding signals.  This feature subset is obtained by apply grep with the strings `mean()` and `std()` to the list of features obtained from the file `features.txt` included with dataset.  The resulting grep operation yields a total of 66 features to which are added subject and activity columns to obtain an initial reduced dataset of 10299 rows by 68 columns.
+From the original 561 measurement variables, a subset of features are obtained by keeping only those measurements representing the mean and standard deviation of the corresponding signals.  This feature subset is obtained by apply the grepl function of R with the strings `mean()` and `std()` to the list of features obtained from the file `features.txt` included with dataset.  The resulting grep operation yields a total of 66 features to which are added subject and activity columns to obtain an initial reduced dataset of 10299 rows by 68 columns.
 
 To give a more verbose naming to the columns in the dataset, the original feature names have been mapped using the following rules: 
-    t -> timeSignal
-    f -> frequencySignal
-    Acc -> Accelerometer
-    Gyro -> Gyroscope
-    Mag -> Magnitude
-and components have been separated by periods so that, for example, the original signal
+
+    * t -> timeSignal
+    * f -> frequencySignal
+    * Acc -> Accelerometer
+    * Gyro -> Gyroscope
+    * Mag -> Magnitude
+    
+and logical components have been separated by periods so that, for example, the original signal
+
     tBodyAcc-mean()-X becomes timeSignal.BodyAccelerometer.mean.X
 and 
+
     fBodyGyroJerk-std()-Z becomes frequencySignal.BodyGyroscope.std.Z
 A complete list of feature names is provided in a table at the end of the document.
 
-To produce the final tidy dataset, the reduced feature dataset is grouped by subject and activity and the mean is taken 
+To produce the final tidy dataset, the reduced feature dataset is grouped by subject and activity and the mean is taken using the summarise_each function of the dplyr package. The tidy dataset then consists of 180 rows x 68 columns representing aggregate measurements for 30 subjects each performing 6 different activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING).
 
-The tidy dataset consists of 180 rows x 68 columns representing aggregate measurements for 30 subjects each performing 6 different activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING).
 
 ## Tidy Dataset Features
 
